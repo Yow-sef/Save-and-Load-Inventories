@@ -155,10 +155,10 @@ public class Util {
 	}
 
 	public static Player matchPlayer(Player player, String targetName) {
-		if (player.getServer() == null) {
+		if (player.level().getServer() == null) {
 			return null;
 		}
-		return player.getServer().getPlayerList().getPlayerByName(targetName);
+		return player.level().getServer().getPlayerList().getPlayerByName(targetName);
 	}
 
 	public static void sendMessage(CommandSourceStack source, String message, ChatFormatting formatting) {
