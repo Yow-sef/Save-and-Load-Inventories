@@ -15,13 +15,13 @@ import net.minecraft.world.entity.player.Player;
 
 public class CommandSaveinventory {
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands.literal("saveinventory").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+		dispatcher.register(Commands.literal("saveinventory").requires(Commands.hasPermission(Commands.LEVEL_ALL))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
 			.executes((command) -> {
 				return saveinventory(command);
 			}))
 		);
-		dispatcher.register(Commands.literal("si").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+		dispatcher.register(Commands.literal("si").requires(Commands.hasPermission(Commands.LEVEL_ALL))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
 			.executes((command) -> {
 				return saveinventory(command);
