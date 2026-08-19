@@ -1,7 +1,5 @@
 package com.natamus.saveandloadinventories;
 
-import com.natamus.collective.check.RegisterMod;
-import com.natamus.collective.check.ShouldLoadCheck;
 import com.natamus.saveandloadinventories.forge.events.ForgeCommandRegisterEvent;
 import com.natamus.saveandloadinventories.util.Reference;
 import net.minecraftforge.eventbus.api.bus.BusGroup;
@@ -13,17 +11,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class ModForge {
 	
 	public ModForge(FMLJavaModLoadingContext modLoadingContext) {
-		if (!ShouldLoadCheck.shouldLoad(Reference.MOD_ID)) {
-			return;
-		}
-
 		BusGroup busGroup = modLoadingContext.getModBusGroup();
 		FMLLoadCompleteEvent.getBus(busGroup).addListener(this::loadComplete);
 
 		setGlobalConstants();
 		ModCommon.init();
-
-		RegisterMod.register(Reference.NAME, Reference.MOD_ID, Reference.VERSION, Reference.ACCEPTED_VERSIONS);
 	}
 
 	private void loadComplete(final FMLLoadCompleteEvent event) {

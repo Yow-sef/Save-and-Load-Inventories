@@ -1,7 +1,5 @@
 package com.natamus.saveandloadinventories;
 
-import com.natamus.collective.check.RegisterMod;
-import com.natamus.collective.check.ShouldLoadCheck;
 import com.natamus.saveandloadinventories.neoforge.events.NeoForgeCommandRegisterEvent;
 import com.natamus.saveandloadinventories.util.Reference;
 import net.neoforged.neoforge.common.NeoForge;
@@ -13,16 +11,10 @@ import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 public class ModNeoForge {
 	
 	public ModNeoForge(IEventBus modEventBus) {
-		if (!ShouldLoadCheck.shouldLoad(Reference.MOD_ID)) {
-			return;
-		}
-
 		modEventBus.addListener(this::loadComplete);
 
 		setGlobalConstants();
 		ModCommon.init();
-
-		RegisterMod.register(Reference.NAME, Reference.MOD_ID, Reference.VERSION, Reference.ACCEPTED_VERSIONS);
 	}
 
 	private void loadComplete(final FMLLoadCompleteEvent event) {
