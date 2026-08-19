@@ -11,18 +11,17 @@ import com.natamus.saveandloadinventories.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.entity.player.Player;
 
 public class CommandSaveinventory {
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands.literal("saveinventory").requires((iCommandSender) -> iCommandSender.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
+		dispatcher.register(Commands.literal("saveinventory").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
 			.executes((command) -> {
 				return saveinventory(command);
 			}))
 		);
-		dispatcher.register(Commands.literal("si").requires((iCommandSender) -> iCommandSender.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
+		dispatcher.register(Commands.literal("si").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
 			.executes((command) -> {
 				return saveinventory(command);

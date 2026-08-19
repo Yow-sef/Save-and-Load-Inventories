@@ -6,12 +6,11 @@ import com.natamus.saveandloadinventories.util.Util;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.permissions.Permissions;
 import net.minecraft.ChatFormatting;
 
 public class CommandListinventories {
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands.literal("listinventories").requires((iCommandSender) -> iCommandSender.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
+		dispatcher.register(Commands.literal("listinventories").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.executes((command) -> {
 				CommandSourceStack source = command.getSource();
 				

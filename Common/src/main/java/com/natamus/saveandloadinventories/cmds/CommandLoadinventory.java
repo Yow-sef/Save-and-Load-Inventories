@@ -11,12 +11,11 @@ import com.natamus.saveandloadinventories.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.entity.player.Player;
 
 public class CommandLoadinventory {
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands.literal("loadinventory").requires((iCommandSender) -> iCommandSender.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
+		dispatcher.register(Commands.literal("loadinventory").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
 			.executes((command) -> {
 				return loadInventory(command);
@@ -27,7 +26,7 @@ public class CommandLoadinventory {
 				return loadInventoryForPlayerName(command);
 			})))
 		);
-		dispatcher.register(Commands.literal("li").requires((iCommandSender) -> iCommandSender.permissions().hasPermission(Permissions.COMMANDS_ADMIN))
+		dispatcher.register(Commands.literal("li").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
 			.executes((command) -> {
 				return loadInventory(command);
