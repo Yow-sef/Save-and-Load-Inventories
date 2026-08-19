@@ -2,8 +2,6 @@ package com.natamus.saveandloadinventories;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.natamus.collective.functions.PlayerFunctions;
-import com.natamus.collective.functions.StringFunctions;
 import com.natamus.saveandloadinventories.util.Util;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -59,8 +57,8 @@ public class ModFabricClient implements ClientModInitializer {
 			return 0;
 		}
 
-		String gearstring = PlayerFunctions.getPlayerGearString(player);
-		if (StringFunctions.sequenceCount(gearstring, "\n") < 40) {
+		String gearstring = Util.getPlayerGearString(player);
+		if (gearstring.isEmpty()) {
 			source.sendError(Component.literal("Something went wrong while generating inventory string.").withStyle(ChatFormatting.RED));
 			return 0;
 		}
@@ -101,7 +99,7 @@ public class ModFabricClient implements ClientModInitializer {
 			return 0;
 		}
 
-		PlayerFunctions.setPlayerGearFromString(player, gearstring);
+		Util.setPlayerGearFromString(player, gearstring);
 		if (player.isCreative() && Minecraft.getInstance().gameMode != null) {
 			for (int i = 0; i < player.inventoryMenu.slots.size(); i++) {
 				Minecraft.getInstance().gameMode.handleCreativeModeItemAdd(player.inventoryMenu.slots.get(i).getItem(), i);

@@ -4,9 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.natamus.collective.functions.MessageFunctions;
-import com.natamus.collective.functions.PlayerFunctions;
-import com.natamus.collective.functions.StringFunctions;
 import com.natamus.saveandloadinventories.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -36,29 +33,29 @@ public class CommandSaveinventory {
 			player = source.getPlayerOrException();
 		}
 		catch (CommandSyntaxException ex) {
-			MessageFunctions.sendTranslatableMessage(source, "collective.shared.message.playeronly", ChatFormatting.RED);
+			Util.sendMessage(source, "This command can only be executed by a player.", ChatFormatting.RED);
 			return 1;
 		}
 		
 		String inventoryname = StringArgumentType.getString(command, "inventory-name").toLowerCase();
-		if (inventoryname.trim() == "") {
-			MessageFunctions.sendTranslatableMessage(source, "collective.saveandloadinventories.message.inventorynameinvalid", ChatFormatting.RED, inventoryname);
+		if (inventoryname.trim().isEmpty()) {
+			Util.sendMessage(source, "Inventory name '" + inventoryname + "' is invalid.", ChatFormatting.RED);
 			return 0;
 		}
 		
-		String gearstring = PlayerFunctions.getPlayerGearString(player);
-		if (StringFunctions.sequenceCount(gearstring, "\n") < 40) {
-			MessageFunctions.sendTranslatableMessage(source, "collective.saveandloadinventories.message.somethingwentwrongwhilegenerating", ChatFormatting.RED);
+		String gearstring = Util.getPlayerGearString(player);
+		if (gearstring.isEmpty()) {
+			Util.sendMessage(source, "Something went wrong while generating inventory string.", ChatFormatting.RED);
 			return 0;					
 		}
 		
 		if (!Util.writeGearStringToFile(inventoryname, gearstring)) {
-			MessageFunctions.sendTranslatableMessage(source, "collective.saveandloadinventories.message.somethingwentwrongwhile", ChatFormatting.RED, inventoryname);
+			Util.sendMessage(source, "Something went wrong while saving inventory to file.", ChatFormatting.RED);
 			return 0;							
 		}
 		
-		MessageFunctions.sendTranslatableMessage(source, "collective.saveandloadinventories.message.successfullysavedinventory", ChatFormatting.DARK_GREEN, inventoryname);
-		MessageFunctions.sendTranslatableMessage(source, "collective.saveandloadinventories.message.loadcommandloadinventory", ChatFormatting.DARK_GREEN, inventoryname);
+		Util.sendMessage(source, "Successfully saved inventory with name '" + inventoryname + "'!", ChatFormatting.DARK_GREEN);
+		Util.sendMessage(source, "Load it with /loadinventory " + inventoryname, ChatFormatting.DARK_GREEN);
 		return 1;
 	}
 }
