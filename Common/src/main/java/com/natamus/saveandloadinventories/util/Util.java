@@ -49,6 +49,25 @@ public class Util {
 		return gearstring;
 	}
 
+	public static java.util.List<String> getSavedInventoryNames() {
+		java.util.List<String> names = new java.util.ArrayList<>();
+		File folder = new File(dirpath);
+		if (!folder.isDirectory()) {
+			return names;
+		}
+
+		File[] listOfFiles = folder.listFiles();
+		if (listOfFiles != null) {
+			for (File listOfFile : listOfFiles) {
+				if (listOfFile.isFile() && listOfFile.getName().endsWith(".txt")) {
+					names.add(listOfFile.getName().replace(".txt", ""));
+				}
+			}
+		}
+
+		return names;
+	}
+
 	public static String getListOfInventories() {
 		StringBuilder inventories = new StringBuilder();
 

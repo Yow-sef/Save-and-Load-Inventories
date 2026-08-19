@@ -4,20 +4,25 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.natamus.saveandloadinventories.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.world.entity.player.Player;
 
 public class CommandLoadinventory {
+	private static final SuggestionProvider<CommandSourceStack> INVENTORY_SUGGESTIONS = (context, builder) ->
+		SharedSuggestionProvider.suggest(Util.getSavedInventoryNames(), builder);
+
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(Commands.literal("loadinventory").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
+			.suggests(INVENTORY_SUGGESTIONS)
 			.executes((command) -> {
 				return loadInventory(command);
-			}))
-			.then(Commands.argument("inventory-name", StringArgumentType.word())
+			})
 			.then(Commands.argument("player-name", StringArgumentType.word())
 			.executes((command) -> {
 				return loadInventoryForPlayerName(command);
@@ -25,10 +30,10 @@ public class CommandLoadinventory {
 		);
 		dispatcher.register(Commands.literal("li").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
+			.suggests(INVENTORY_SUGGESTIONS)
 			.executes((command) -> {
 				return loadInventory(command);
-			}))
-			.then(Commands.argument("inventory-name", StringArgumentType.word())
+			})
 			.then(Commands.argument("player-name", StringArgumentType.word())
 			.executes((command) -> {
 				return loadInventoryForPlayerName(command);

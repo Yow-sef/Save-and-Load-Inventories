@@ -4,22 +4,29 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.natamus.saveandloadinventories.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.world.entity.player.Player;
 
 public class CommandSaveinventory {
+	private static final SuggestionProvider<CommandSourceStack> INVENTORY_SUGGESTIONS = (context, builder) ->
+		SharedSuggestionProvider.suggest(Util.getSavedInventoryNames(), builder);
+
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 		dispatcher.register(Commands.literal("saveinventory").requires(Commands.hasPermission(Commands.LEVEL_ALL))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
+			.suggests(INVENTORY_SUGGESTIONS)
 			.executes((command) -> {
 				return saveinventory(command);
 			}))
 		);
 		dispatcher.register(Commands.literal("si").requires(Commands.hasPermission(Commands.LEVEL_ALL))
 			.then(Commands.argument("inventory-name", StringArgumentType.word())
+			.suggests(INVENTORY_SUGGESTIONS)
 			.executes((command) -> {
 				return saveinventory(command);
 			}))

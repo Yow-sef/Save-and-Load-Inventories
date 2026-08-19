@@ -2,6 +2,7 @@ package com.natamus.saveandloadinventories;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.natamus.saveandloadinventories.util.Util;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -10,9 +11,13 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 
 public class ModFabricClient implements ClientModInitializer {
+
+	private static final SuggestionProvider<FabricClientCommandSource> INVENTORY_SUGGESTIONS = (context, builder) ->
+		SharedSuggestionProvider.suggest(Util.getSavedInventoryNames(), builder);
 
 	@Override
 	public void onInitializeClient() {
@@ -20,10 +25,12 @@ public class ModFabricClient implements ClientModInitializer {
 			// /saveinventory and /si
 			dispatcher.register(ClientCommands.literal("saveinventory")
 				.then(ClientCommands.argument("inventory-name", StringArgumentType.word())
+				.suggests(INVENTORY_SUGGESTIONS)
 				.executes(ModFabricClient::saveInventoryClient))
 			);
 			dispatcher.register(ClientCommands.literal("si")
 				.then(ClientCommands.argument("inventory-name", StringArgumentType.word())
+				.suggests(INVENTORY_SUGGESTIONS)
 				.executes(ModFabricClient::saveInventoryClient))
 			);
 
@@ -35,10 +42,12 @@ public class ModFabricClient implements ClientModInitializer {
 			// /loadinventory and /li
 			dispatcher.register(ClientCommands.literal("loadinventory")
 				.then(ClientCommands.argument("inventory-name", StringArgumentType.word())
+				.suggests(INVENTORY_SUGGESTIONS)
 				.executes(ModFabricClient::loadInventoryClient))
 			);
 			dispatcher.register(ClientCommands.literal("li")
 				.then(ClientCommands.argument("inventory-name", StringArgumentType.word())
+				.suggests(INVENTORY_SUGGESTIONS)
 				.executes(ModFabricClient::loadInventoryClient))
 			);
 		});
