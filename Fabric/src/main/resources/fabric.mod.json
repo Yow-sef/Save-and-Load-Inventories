@@ -15,8 +15,10 @@
   "license": "All Right Reserved",
   "icon": "icon.png",
 
-  "environment": "*",
-  "entrypoints": { "main": [ "com.natamus.saveandloadinventories.ModFabric" ] },
+  "entrypoints": {
+    "main": [ "com.natamus.saveandloadinventories.ModFabric" ],
+    "client": [ "com.natamus.saveandloadinventories.ModFabricClient" ]
+  },
 
   "depends": {
     "fabricloader": ">=0.18.0",

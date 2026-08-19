@@ -10,7 +10,7 @@ import net.minecraft.ChatFormatting;
 
 public class CommandListinventories {
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher.register(Commands.literal("listinventories").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+		dispatcher.register(Commands.literal("listinventories").requires(Commands.hasPermission(Commands.LEVEL_ALL))
 			.executes((command) -> {
 				CommandSourceStack source = command.getSource();
 				
